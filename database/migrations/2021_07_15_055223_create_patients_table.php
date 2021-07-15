@@ -19,9 +19,9 @@ class CreatePatientsTable extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->integer('age');
-            $table->integer('contact_number')->nullable();
+            $table->string('contact_number')->nullable();
             $table->string('symptoms')->nullable();
-            $table->date('first_symptom_date');
+            $table->date('first_symptom_date')->nullable();
             $table->boolean('is_tested');
             $table->date('test_date')->nullable();
             $table->boolean('is_recovered');

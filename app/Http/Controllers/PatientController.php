@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PatientRequest;
+use App\Http\Requests\UpdatePatientRequest;
+use App\Models\Patient;
+
 
 class PatientController extends Controller
 {
@@ -13,28 +17,29 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        //
+        $patient = Patient::all();
+        return $patient;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\PatientRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PatientRequest $request)
     {
-        //
+        $data = $request->all();
+        
+        // --- saved the record using fill method
+        // $patient = new Patient;
+        // $patient->fill($data);
+        // $patient->save();
+
+        // --- save record usning create
+        $patient = Patient::create($data);
+
+        return response()->json(['message' => 'Patient added successfully', 'patient' => $patient]);
     }
 
     /**
@@ -45,30 +50,26 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $patient = Patient::where('id', $id)->get();
+        return $patient;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UpdatePatientRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePatientRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $patient = Patient::where('id', $id)
+            ->update($data);
+
+        return response()->json([ 
+            'message' => $patient ? 'patient updated successfully' : 'Error ! patient did not updated successfully' 
+        ]);
     }
 
     /**
@@ -79,6 +80,10 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $patient = Patient::where('id', $id)->delete();
+
+        return response()->json([ 
+            'message' => $patient ? 'patient deleted successfully' : 'Error ! patient did not deleted successfully' 
+        ]);
     }
 }
