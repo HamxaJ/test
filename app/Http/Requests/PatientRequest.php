@@ -30,11 +30,11 @@ class PatientRequest extends FormRequest
             'age' => 'required|numeric',
             'contact_number' => 'required|regex:/(03)[0-9]{9}/',
             'symptoms' => 'sometimes|required',
-            'first_symptom_date' => 'sometimes|required|date',
+            'first_symptom_date' => 'required_with:symptoms|date',
             'is_tested' => 'required|boolean',
-            'test_date' => 'sometimes|required|date',
+            'test_date' => 'required_with:is_tested|date',
             'is_recovered' => 'required|boolean',
-            'recovery_date' => 'sometimes|required|date',
+            'recovery_date' => 'required_with:is_recovered|date',
         ];
     }
 }
