@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Models\Patient;
-
+use App\Http\Resources\PatientResource;
 
 class PatientController extends Controller
 {
@@ -29,17 +29,13 @@ class PatientController extends Controller
      */
     public function store(PatientRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         
-        // --- saved the record using fill method
-        // $patient = new Patient;
-        // $patient->fill($data);
-        // $patient->save();
+        $patient = new Patient;
+        $patient->fill($data);
+        $patient->save();
 
-        // --- save record usning create
-        $patient = Patient::create($data);
-
-        return response()->json(['message' => 'Patient added successfully', 'patient' => $patient]);
+        return new PatientResource($patient);
     }
 
     /**

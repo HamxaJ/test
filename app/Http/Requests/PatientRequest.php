@@ -24,17 +24,17 @@ class PatientRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required' ,
-            'last_name' => 'required',
+            'first_name' => 'required|string|max:25' ,
+            'last_name' => 'required|string|max:25',
             'email' => 'required|email|unique:patients',
-            'age' => 'required|numeric',
+            'age' => 'required|numeric|digits_between:1,3',
             'contact_number' => 'required|regex:/(03)[0-9]{9}/',
-            'symptoms' => 'sometimes|required',
-            'first_symptom_date' => 'required_if:symptoms,==,true|date',
+            'symptoms' => 'sometimes|array',
+            'first_symptom_date' => 'required_if:symptoms,true|date_format:Y-m-d',
             'is_tested' => 'required|boolean',
-            'test_date' => 'required_if:is_tested,==,true|date',
+            'test_date' => 'required_if:is_tested,true|date_format:Y-m-d',
             'is_recovered' => 'required|boolean',
-            'recovery_date' => 'required_if:is_recovered,==,true|date',
+            'recovery_date' => 'required_if:is_recovered,true|date_format:Y-m-d',
         ];
     }
 }
