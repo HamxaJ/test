@@ -18,33 +18,31 @@ class PatientController extends Controller
     public function index()
     {
         $patient = Patient::all();
-        return $patient;
+        return PatientResource::collection($patient);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Patient $patient)
     {
-        $patient = Patient::where('id', $id)->get();
-        return $patient;
+        return new PatientResource($patient);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\UpdatePatientRequest  $request
-     * @param  int  $id
+     * @param  pPatient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePatientRequest $request, $id)
+    public function update(UpdatePatientRequest $request, Patient $patient)
     {
         $data = $request->validated();
-        $patient = Patient::where('id', $id)
-            ->update($data);
+        $patient = $patient->update($data);
 
         return response()->json([ 
             'message' => $patient ? 'patient updated successfully' : 'Error ! patient did not updated successfully' 
@@ -54,12 +52,12 @@ class PatientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Patient $patient)
     {
-        $patient = Patient::where('id', $id)->delete();
+        $patient = $patient->delete();
 
         return response()->json([ 
             'message' => $patient ? 'patient deleted successfully' : 'Error ! patient did not deleted successfully' 
