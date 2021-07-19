@@ -27,6 +27,7 @@ class PatientRequest extends FormRequest
             'first_name' => 'required|string|max:25' ,
             'last_name' => 'required|string|max:25',
             'email' => 'required|email|unique:patients',
+            'password' => 'required|confirmed|min:6',
             'age' => 'required|numeric|digits_between:1,3',
             'contact_number' => 'required|regex:/(03)[0-9]{9}/',
             'symptoms' => 'sometimes|array',

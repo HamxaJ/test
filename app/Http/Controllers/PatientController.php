@@ -22,23 +22,6 @@ class PatientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\PatientRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(PatientRequest $request)
-    {
-        $data = $request->validated();
-        
-        $patient = new Patient;
-        $patient->fill($data);
-        $patient->save();
-
-        return new PatientResource($patient);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id

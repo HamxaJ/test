@@ -26,6 +26,7 @@ class PatientFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'age' => $this->faker->randomNumber(2, true),
+            'password' => '$2y$10$LRzgmzgxI9pdz.BJh081huEpW7nOx4wwGItF78z057xNDBUr/3EoW',
             // 'contact_number' => $this->faker->e164PhoneNumber(),
             // 'symptoms' => '["Flu", "fever", "dry cough"]',
             'first_symptom_date' => $this->faker->date(),

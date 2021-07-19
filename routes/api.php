@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('covid', PatientController::class);
+Route::get('login', 'AuthController@login');
+Route::post('register', 'AuthController@register');
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('logout', 'AuthController@logout');
+    Route::resource('patient', PatientController::class)->only([
+        'index', 'show', 'destroy', 'update'
+    ]);
+});
