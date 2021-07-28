@@ -27,6 +27,7 @@ class CreatePatientsTable extends Migration
             $table->date('test_date')->nullable();
             $table->boolean('is_recovered')->nullable();
             $table->date('recovery_date')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

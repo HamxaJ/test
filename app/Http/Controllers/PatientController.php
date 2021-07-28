@@ -11,6 +11,14 @@ use App\Http\Resources\PatientResource;
 class PatientController extends Controller
 {
     /**
+     * AuthController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,8 +52,8 @@ class PatientController extends Controller
         $data = $request->validated();
         $patient = $patient->update($data);
 
-        return response()->json([ 
-            'message' => $patient ? 'patient updated successfully' : 'Error ! patient did not updated successfully' 
+        return response()->json([
+            'message' => $patient ? 'patient updated successfully' : 'Error ! patient did not updated successfully'
         ]);
     }
 
@@ -59,8 +67,8 @@ class PatientController extends Controller
     {
         $patient = $patient->delete();
 
-        return response()->json([ 
-            'message' => $patient ? 'patient deleted successfully' : 'Error ! patient did not deleted successfully' 
+        return response()->json([
+            'message' => $patient ? 'patient deleted successfully' : 'Error ! patient did not deleted successfully'
         ]);
     }
 }

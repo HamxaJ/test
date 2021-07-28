@@ -13,16 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
+Route::post('forgot-password', 'AuthController@forgotPassword');
+Route::post('reset-password', 'AuthController@resetPassword');
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('logout', 'AuthController@logout');
-    Route::resource('patient', PatientController::class)->only([
-        'index', 'show', 'destroy', 'update'
-    ]);
-});
+Route::get('logout', 'AuthController@logout');
+
+Route::resource('user', UserController::class)->only([
+    'index', 'show', 'destroy', 'update'
+]);
