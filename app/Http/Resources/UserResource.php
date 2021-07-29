@@ -15,7 +15,7 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'first name' => $this->first_name  ,
+            'first name' => $this->first_name,
             'last name' => $this->last_name,
             'email' => $this->email,
             'age' => $this->age,
@@ -28,6 +28,9 @@ class UserResource extends JsonResource
             'is_recovered' => $this->is_recovered,
             'recovery date' => $this->recovery_date,
             'status' => $this->status,
+            // 'schedules' => ScheduleResource::collection($this->schedules),
+            // 'bookings' => BookingResource::collection($this->bookings),
+            // 'appointments' => BookingResource::collection($this->appointments),
         ];
     }
 }

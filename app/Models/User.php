@@ -48,4 +48,30 @@ class User extends Authenticatable
         // $this->notify(new ResetPasswordNotification($token));
         Notification::send($this, new ResetPasswordNotification($token));
     }
+
+    /**
+     * Get the schedules for the doctors.
+     */
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * Get the bookings for the doctors.
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'doctor_id');
+    }
+
+
+    /**
+     * Get the appointments for the patients.
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Booking::class, 'patient_id');
+    }
+
 }

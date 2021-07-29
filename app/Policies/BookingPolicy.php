@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Booking;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BookingPolicy
@@ -41,7 +42,8 @@ class BookingPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role == 'admin'? Response::allow()
+        : Response::deny("Only admin can add bookings.");
     }
 
     /**
@@ -53,7 +55,8 @@ class BookingPolicy
      */
     public function update(User $user, Booking $booking)
     {
-        //
+        return $user->role == 'admin'? Response::allow()
+        : Response::deny("Only admin can update bookings.");
     }
 
     /**

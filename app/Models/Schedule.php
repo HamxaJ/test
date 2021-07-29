@@ -15,4 +15,12 @@ class Schedule extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Get the patient that has an appointment.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

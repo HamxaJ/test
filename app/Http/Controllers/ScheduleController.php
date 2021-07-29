@@ -168,4 +168,16 @@ class ScheduleController extends Controller
             'message' => $schedule ? 'patient deleted successfully' : 'Error ! patient did not deleted successfully'
         ]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getSchedule(User  $user){
+        $schedule = Schedule::where('user_id', $user->id)->where('status', 'available')->get();
+        return ScheduleResource::collection($schedule);
+    }
 }
