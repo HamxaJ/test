@@ -26,6 +26,7 @@ class BookingController extends Controller
      */
     public function index()
     {
+        $this->authorize('view', Booking::class);
         $booking = Booking::all();
         return BookingResource::collection($booking);
     }
@@ -38,7 +39,7 @@ class BookingController extends Controller
      */
     public function store(BookingRequest $request)
     {
-        // $this->authorize('create', Booking::class);
+        $this->authorize('create', Booking::class);
 
         $data = $request->validated();
 
@@ -65,17 +66,36 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
+        $this->authorize('view', Booking::class);
         return new BookingResource($booking);
     }
 
-    public function getBookings(User $user)
+    /**
+     * Get bookings of doctor.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getBookings(Request $request)
     {
+        $this->authorize('bookings', Booking::class);
+
+        $user = $request->user();
         $schedule = Booking::where('doctor_id', $user->id)->get();
         return BookingResource::collection($schedule);
     }
 
-    public function getAppointments(User $user)
+    /**
+     * get appoinments of patients.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAppointments(Request $request)
     {
+        $user = $request->user();
+        $this->authorize('appointments', Booking::class);
+
         $schedule = Booking::where('patient_id', $user->id)->get();
         return BookingResource::collection($schedule);
     }
@@ -89,6 +109,7 @@ class BookingController extends Controller
      */
     public function update(BookingRequest $request, Booking $booking)
     {
+        $this->authorize('update', $booking);
         $data = $request->validated();
 
         if($booking->schedule_id !== $data['schedule_id']){
@@ -122,6 +143,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
+        $this->authorize('delete', Booking::class);
         // update schedual slot status in scheduals table
         $Schedule = Schedule::where('id', $booking->schedule_id)->update([
             'status' => 'available',

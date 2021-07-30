@@ -12,26 +12,36 @@ class BookingPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function view(User $user)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Booking  $booking
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Booking $booking)
+    public function appointments(User $user)
     {
-        //
+        return $user->role == 'patient';
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function bookings(User $user)
+    {
+        return $user->role == 'doctor';
     }
 
     /**
@@ -63,35 +73,10 @@ class BookingPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Booking  $booking
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Booking $booking)
+    public function delete(User $user)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Booking  $booking
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, Booking $booking)
-    {
-        //
+        return $user->role == 'admin';
     }
 }
