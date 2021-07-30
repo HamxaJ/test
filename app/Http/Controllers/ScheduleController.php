@@ -82,6 +82,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
+        $this->authorize('view', $schedule);
         return new ScheduleResource($schedule);
     }
 
@@ -94,10 +95,13 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
+        $this->authorize('update', $schedule);
         $data = $request->validated();
 
-        $schedule = new Schedule;
-        $schedule = $schedule->fill($data);
+        $schedule = $schedule->fill([
+            'status' => $data['status']
+        ]);
+        $schedule->save();
 
         return response()->json([
             'message' => $schedule ? 'patient updated successfully' : 'Error ! patient did not updated successfully',
@@ -106,15 +110,15 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the doctor's schedule of week in storage.
      *
      * @param  ScheduleRequest $request
      * @param Schedule $schedule
      * @return \Illuminate\Http\Response
      */
-    public function updateDoctorSchedule(ScheduleRequest $request, Schedule $schedule)
+    public function updateDoctorSchedule(ScheduleRequest $request)
     {
-        $this->authorize('update', $schedule);
+        $this->authorize('updateSchedule', Schedule::class);
         $data = $request->validated();
 
         $slot['user_id'] = $request->user()->id;
@@ -130,9 +134,7 @@ class ScheduleController extends Controller
                 $day_end = $data['weekdays'][$key]['end_time'];
 
                 $delete = Schedule::where('user_id', $slot['user_id'])->where('weekday', $slot['weekday'])->delete();
-                if ($delete) {
-                    dd('working fine', $delete);
-                }
+
                 // making time slots for single day
                 $period = new CarbonPeriod($day_start, '30 minutes', $day_end); // for create use 24 hours format later change format
 
@@ -155,13 +157,14 @@ class ScheduleController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified slot(schedule) from storage.
      *
      * @param  Schedule $schedule
      * @return \Illuminate\Http\Response
      */
     public function destroy(Schedule $schedule)
     {
+        $this->authorize('delete', $schedule);
         $schedule = $schedule->delete();
 
         return response()->json([
@@ -170,13 +173,16 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the Available slots (Schedule) of a doctor.
      *
      * @param  User  $user
      * @return \Illuminate\Http\Response
      */
 
-    public function getSchedule(User  $user){
+    public function getSchedule(User  $user, Schedule $schedule)
+    {
+        $this->authorize('view', $schedule);
+
         $schedule = Schedule::where('user_id', $user->id)->where('status', 'available')->get();
         return ScheduleResource::collection($schedule);
     }

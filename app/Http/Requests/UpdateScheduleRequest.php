@@ -24,11 +24,7 @@ class UpdateScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            'weekday' => 'required|string',
-            'date' => 'required',
-            'start_time' => 'required|date_format:G:i',
-            'end_time' => 'required|date_format:G:i',
-            'status' => 'required',
+            'status' => 'required|string',
         ];
     }
 }
